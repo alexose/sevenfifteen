@@ -29,18 +29,25 @@ Generator.prototype.initTemplater = function(){
 // TODO: http://stackoverflow.com/questions/14508707/updating-an-inputs-value-without-losing-cursor-position
 Generator.prototype.handler = function(evt){
 
-	var input   = $(evt.target),
-		text    = input.text(),
-		regex   = new RegExp('{{(.+?)}}', 'g');
-		matches = text.match(regex);
+	var input     = evt.target,
+		$input    = $(input),
+		text      = $input.text(),
+		regex     = new RegExp('{{(.+?)}}', 'g'),
+		matches   = text.match(regex),
+		selection = window.getSelection(),
+		range     = selection.getRangeAt(0);
 
+	console.log(range);
 	for (var i in matches){
 		var match = matches[i];
 
 		text = text.replace(match, '<span class="highlight">' + match + '</span>');
 	}
 
-	input.html(text);
+	$input.html(text);
+	console.log(range);
+	window.getSelection().addRange(range);
+
 };
 
 Generator.prototype.templates = {
